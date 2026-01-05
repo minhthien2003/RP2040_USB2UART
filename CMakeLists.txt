@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 #uart_rx_tx.pio
-add_executable(PIOUart main.c  usb_descriptors.c uart_rx_tx.pio)
+add_executable(PIOUart main.c  usb_descriptors.c uart_rx_tx.pio uart_pio.c)
 
 
 pico_generate_pio_header(PIOUart ${CMAKE_CURRENT_LIST_DIR}/uart_rx_tx.pio)
