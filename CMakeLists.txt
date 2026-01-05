@@ -28,34 +28,34 @@ set(PICO_BOARD pico CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(4Com C CXX ASM)
+project(PIOUart C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 #uart_rx_tx.pio
-add_executable(4Com 4Com.c  usb_descriptors.c)
+add_executable(PIOUart main.c  usb_descriptors.c uart_rx_tx.pio)
 
 
-#pico_generate_pio_header(4Com ${CMAKE_CURRENT_LIST_DIR}/uart_rx_tx.pio)
-pico_set_program_name(4Com "4Com")
-pico_set_program_version(4Com "0.1")
+pico_generate_pio_header(PIOUart ${CMAKE_CURRENT_LIST_DIR}/uart_rx_tx.pio)
+pico_set_program_name(PIOUart "PIOUart")
+pico_set_program_version(PIOUart "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(4Com 0)
-pico_enable_stdio_usb(4Com 0)
+pico_enable_stdio_uart(PIOUart 0)
+pico_enable_stdio_usb(PIOUart 0)
 
 # Add the standard library to the build
-target_link_libraries(4Com
+target_link_libraries(PIOUart
         pico_stdlib
-        #hardware_pio
+        hardware_pio
         tinyusb_device)
 
 # Add the standard include files to the build
-target_include_directories(4Com PRIVATE
+target_include_directories(PIOUart PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
 )
 
-pico_add_extra_outputs(4Com)
+pico_add_extra_outputs(PIOUart)
 

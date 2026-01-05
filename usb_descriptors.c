@@ -14,7 +14,7 @@ tusb_desc_device_t const desc_device = {
 
     .bMaxPacketSize0    = CFG_TUD_ENDPOINT0_SIZE,
 
-    .idVendor           = 0xCafe,   // bạn có thể đổi
+    .idVendor           = 0xCafe,   
     .idProduct          = 0x4002,
     .bcdDevice          = 0x0100,
 
@@ -34,7 +34,7 @@ uint8_t const * tud_descriptor_device_cb(void) {
 // Configuration Descriptor
 // ================================
 
-#define CONFIG_TOTAL_LEN  (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN * 2)
+#define CONFIG_TOTAL_LEN  (TUD_CONFIG_DESC_LEN + TUD_CDC_DESC_LEN * 4)
 
 #define EPNUM_CDC0_NOTIF   0x81
 #define EPNUM_CDC0_OUT     0x02
@@ -45,25 +45,22 @@ uint8_t const * tud_descriptor_device_cb(void) {
 #define EPNUM_CDC1_IN      0x84
 
 uint8_t const desc_configuration[] = {
-    // Config
-    TUD_CONFIG_DESCRIPTOR(1, 4, 0, CONFIG_TOTAL_LEN,
-                           TUSB_DESC_CONFIG_ATT_REMOTE_WAKEUP, 100),
+    
+    // Config, you have to modify the 5 parameter when change the Number of CDC
+    TUD_CONFIG_DESCRIPTOR(1, 8, 0, CONFIG_TOTAL_LEN,
+                           0x00, 100),
 
     // CDC 0
-    TUD_CDC_DESCRIPTOR(0, 4,
-                       EPNUM_CDC0_NOTIF,
-                       8,
-                       EPNUM_CDC0_OUT,
-                       EPNUM_CDC0_IN,
-                       64),
+    TUD_CDC_DESCRIPTOR(0, 4, 0x81, 8, 0x02, 0x82, 64),
 
     // CDC 1
-    TUD_CDC_DESCRIPTOR(2, 5,
-                       EPNUM_CDC1_NOTIF,
-                       8,
-                       EPNUM_CDC1_OUT,
-                       EPNUM_CDC1_IN,
-                       64),
+    TUD_CDC_DESCRIPTOR(2, 5, 0x83, 8, 0x04, 0x84, 64),
+
+    // CDC 2
+    TUD_CDC_DESCRIPTOR(4, 6, 0x85, 8, 0x06, 0x86, 64),
+
+    // CDC 3
+    TUD_CDC_DESCRIPTOR(6, 7, 0x87, 8, 0x08, 0x88, 64),
 };
 
 uint8_t const * tud_descriptor_configuration_cb(uint8_t index) {
